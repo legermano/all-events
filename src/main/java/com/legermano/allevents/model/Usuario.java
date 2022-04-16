@@ -11,8 +11,6 @@ import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import org.hibernate.annotations.DynamicUpdate;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -39,6 +37,7 @@ public class Usuario {
     @Column(unique = true, nullable = false)
     private String email;
 
+    //TODO: Criptografar a senha no banco de dados
     private String senha;
 
     private Boolean fl_admin;
@@ -46,4 +45,9 @@ public class Usuario {
     @JsonManagedReference(value = "inscricao_ref_usuario")
     @OneToMany(mappedBy = "usuario")
     private List<Inscricao> inscricoes;
+
+    //TODO: Quando a senha for criptografada, alterar forma de verificação
+    public Boolean validaSenha(String senha) {
+        return this.senha.equals(senha);
+    }
 }
