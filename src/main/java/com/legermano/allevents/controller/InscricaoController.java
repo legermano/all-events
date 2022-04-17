@@ -15,6 +15,7 @@ import com.legermano.allevents.model.Usuario;
 import com.legermano.allevents.repository.EventoRepository;
 import com.legermano.allevents.repository.InscricaoRepository;
 import com.legermano.allevents.repository.UsuarioRepository;
+import com.legermano.allevents.util.DateUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -60,14 +61,14 @@ public class InscricaoController {
         Inscricao inscricao = new Inscricao();
         inscricao.setUsuario(usuario.get());
         inscricao.setEvento(evento.get());
-        inscricao.setDataInscricao(LocalDateTime.now());
+        inscricao.setDataInscricao(DateUtils.getCurrentDateTime());
         
         return inscricaoRepository.save(inscricao);
     }
 
     @PostMapping(value = "/cancelar/{id}")
-    public Inscricao cancel(@PathVariable String id) {
-        Optional<Inscricao> inscricaoOptional = inscricaoRepository.findById(Integer.parseInt(id));
+    public Inscricao cancel(@PathVariable Integer id) {
+        Optional<Inscricao> inscricaoOptional = inscricaoRepository.findById(id);
 
         if(inscricaoOptional.isEmpty()) {
             throw new ApiRequestException("Inscrição não encontrada", HttpStatus.NOT_FOUND);
@@ -78,7 +79,7 @@ public class InscricaoController {
         if(inscricao.getDataCancelamento() == null) {
             // Verifica se a data atual está dentro dos dois 2 dias de cancelamento
             LocalDateTime dataMaximaCancelamento = inscricao.getDataInscricao().plusDays(2);
-            LocalDateTime dataAtual = LocalDateTime.now();
+            LocalDateTime dataAtual = DateUtils.getCurrentDateTime();
 
             if(dataAtual.isAfter(dataMaximaCancelamento)) {
                 throw new ApiRequestException("Não é possível cancelar a inscrição após 2 dias", HttpStatus.BAD_REQUEST);

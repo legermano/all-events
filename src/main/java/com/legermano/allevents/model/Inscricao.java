@@ -38,7 +38,7 @@ public class Inscricao {
     private Usuario usuario;
     
     @JsonBackReference(value = "inscricao_ref_evento")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ref_evento", referencedColumnName = "id", nullable = false)
     private Evento evento;
 

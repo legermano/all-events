@@ -10,4 +10,8 @@ public class DateUtils {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DEFAULT_DATE_PATTERN);
         return LocalDateTime.parse(s, formatter);
     }
+
+    public static LocalDateTime getCurrentDateTime() {
+        return LocalDateTime.now();
+    }
 }

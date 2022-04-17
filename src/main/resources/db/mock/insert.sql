@@ -1,4 +1,4 @@
-INSERT INTO usuario VALUES (
+INSERT INTO usuario (id, nome, endereco, telefone, cpf, email, senha, fl_admin) VALUES (
     1,
     'Lucas Emanuel Germano', 
     'Rua José Linhares', 
@@ -9,19 +9,27 @@ INSERT INTO usuario VALUES (
     'f'
 );
 
-INSERT INTO evento VALUES (
+INSERT INTO evento (id, nome, descricao, dt_inicio, dt_fim, maximo_vagas) VALUES (
     1,
-    'Teste de evento',
-    'Teste de evento - desc',
-    '2022-04-16 10:00:00',
-    '2022-04-16 12:00:00',
+    'Evento da Sexta-Feira Santa',
+    'Evento que irá acontecer na sexta-feira Santa',
+    '2022-04-15 09:00:00',
+    '2022-04-15 21:00:00',
     100
 );
 
-INSERT INTO inscricao VALUES (
+INSERT INTO evento (id, nome, descricao, dt_inicio, dt_fim, maximo_vagas) VALUES (
+    2,
+    'Evento Arquitetura de Software',
+    'Evento que irá acontecer na última aula de Arquitetura de Software',
+    '2022-04-20 19:10:00',
+    '2022-04-20 22:30:00',
+    100
+);
+
+INSERT INTO inscricao (id, ref_usuario, ref_evento, dt_inscricao) VALUES (
     1,
     1,
     1,
-    '2022-04-13 11:00:00',
-    NULL
+    '2022-04-13 11:00:00'
 );

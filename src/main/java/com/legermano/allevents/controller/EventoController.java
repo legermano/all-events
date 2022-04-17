@@ -30,8 +30,8 @@ public class EventoController {
     EventoRepository eventoRepository;
 
     @GetMapping("/{id}")
-    public Evento getEvento(@PathVariable String id) {
-        Optional<Evento> evento = eventoRepository.findById(Integer.parseInt(id));
+    public Evento getEvento(@PathVariable Integer id) {
+        Optional<Evento> evento = eventoRepository.findById(id);
 
         if(evento.isEmpty()) {
             throw new ApiRequestException("Evento não encontrado", HttpStatus.NOT_FOUND);
