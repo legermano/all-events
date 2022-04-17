@@ -1,9 +1,9 @@
-package com.legermano.allevents.helper;
+package com.legermano.allevents.util.genericSearch;
 
 public enum SearchOperation {
     EQUALITY, NEGATION, GREATER_THAN, LESS_THAN, LIKE, STARTS_WITH, ENDS_WITH, CONTAINS;
 
-    public static final String[] SIMPLE_OPERATION_SET = {":", "!", ">", "<", "%"};
+    public static final String[] SIMPLE_OPERATION_SET = {"=", "!", ">", "<", "%"};
 
     public static final String OR_PREDICATE_FLAG = "'";
 
@@ -19,7 +19,7 @@ public enum SearchOperation {
 
     public static SearchOperation getSimpleOperation(final char input) {
         switch (input) {
-            case ':':
+            case '=':
                 return EQUALITY;
             case '!':
                 return NEGATION;

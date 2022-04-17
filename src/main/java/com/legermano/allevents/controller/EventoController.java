@@ -1,22 +1,25 @@
 package com.legermano.allevents.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import com.legermano.allevents.exception.ApiRequestException;
-import com.legermano.allevents.helper.CriteriaParse;
-import com.legermano.allevents.helper.GenericSpecification;
-import com.legermano.allevents.helper.GenericSpecificationsBuilder;
 import com.legermano.allevents.model.Evento;
 import com.legermano.allevents.repository.EventoRepository;
+import com.legermano.allevents.util.DateUtils;
+import com.legermano.allevents.util.genericSearch.GenericSpecification;
+import com.legermano.allevents.util.genericSearch.GenericSpecificationsBuilder;
+import com.legermano.allevents.util.genericSearch.SearchCriteriaList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -43,10 +46,22 @@ public class EventoController {
     }
     
     @GetMapping(value = "/filtro")
-    public List<Evento> search(@RequestParam(value = "filter") String filter) {
-        CriteriaParse parser = new CriteriaParse();
+    public List<Evento> search(@RequestBody SearchCriteriaList search) {
         GenericSpecificationsBuilder<Evento> specBuilder = new GenericSpecificationsBuilder<>();
-        Specification<Evento> spec = specBuilder.build(parser.parse(filter), GenericSpecification<Evento>::new);
+        Specification<Evento> spec = specBuilder.build(search.parse(), GenericSpecification<Evento>::new);
         return eventoRepository.findAll(spec);
+    }
+
+    @GetMapping(value = "/futuro")
+    public List<Evento> getFuture(@RequestBody Map<String, String> eventoMap) {
+        LocalDateTime dateTime = DateUtils.convertStrinToLocalDateTime(eventoMap.get("date"));
+        return eventoRepository.findByDataFimGreaterThan(dateTime);
+
+    }
+
+    @GetMapping(value = "/ativos")
+    public List<Evento> getActive(@RequestBody Map<String, String> eventoMap) {
+        LocalDateTime dateTime = DateUtils.convertStrinToLocalDateTime(eventoMap.get("date"));
+        return eventoRepository.findByDataInicioLessThanEqualAndDataFimGreaterThan(dateTime, dateTime);
     }
 }

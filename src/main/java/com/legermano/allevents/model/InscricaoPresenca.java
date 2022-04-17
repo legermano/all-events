@@ -1,6 +1,6 @@
 package com.legermano.allevents.model;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.legermano.allevents.util.DateUtils;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,8 +33,9 @@ public class InscricaoPresenca {
     @JoinColumn(name = "ref_inscricao", referencedColumnName = "id", nullable = false)
     private Inscricao inscricao;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateUtils.DEFAULT_DATE_PATTERN)
     @Column(name = "dt_presenca", nullable = false)
-    private Timestamp dataPresenca;
+    private LocalDateTime dataPresenca;
 
     private String observacao;
 }

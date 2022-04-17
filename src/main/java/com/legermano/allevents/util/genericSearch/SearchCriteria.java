@@ -1,4 +1,4 @@
-package com.legermano.allevents.helper;
+package com.legermano.allevents.util.genericSearch;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

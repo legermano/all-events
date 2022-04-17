@@ -1,4 +1,4 @@
-package com.legermano.allevents.helper;
+package com.legermano.allevents.util.genericSearch;
 
 import java.util.Arrays;
 import java.util.Collections;

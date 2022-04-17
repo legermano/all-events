@@ -1,6 +1,6 @@
 package com.legermano.allevents.model;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -10,7 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.legermano.allevents.util.DateUtils;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,11 +32,13 @@ public class Evento {
 
     private String descricao;
     
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateUtils.DEFAULT_DATE_PATTERN)
     @Column(name = "dt_inicio", nullable = false)
-    private Timestamp dataInicio;
+    private LocalDateTime dataInicio;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateUtils.DEFAULT_DATE_PATTERN)
     @Column(name = "dt_fim", nullable = false)
-    private Timestamp dataFim;
+    private LocalDateTime dataFim;
 
     @Column(name = "maximo_vagas")
     private Integer maximoVagas;

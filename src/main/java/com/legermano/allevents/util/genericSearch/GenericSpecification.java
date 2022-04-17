@@ -1,4 +1,6 @@
-package com.legermano.allevents.helper;
+package com.legermano.allevents.util.genericSearch;
+
+import java.util.Date;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -26,9 +28,9 @@ public class GenericSpecification<T> implements Specification<T>{
             case NEGATION:
                 return builder.notEqual(root.get(criteria.getKey()), criteria.getValue());
             case GREATER_THAN:
-                return builder.greaterThan(root.get(criteria.getKey()), criteria.getValue().toString());
+                return builder.greaterThan(root.<Date>get(criteria.getKey()), builder.parameter(Date.class, criteria.getValue().toString()));
             case LESS_THAN:
-                return builder.lessThan(root.get(criteria.getKey()), criteria.getValue().toString());
+                return builder.lessThan(root.<Date>get(criteria.getKey()), builder.parameter(Date.class, criteria.getValue().toString()));
             case LIKE:
                 return builder.like(root.get(criteria.getKey()), criteria.getValue().toString());
             case STARTS_WITH:
