@@ -35,7 +35,7 @@ public class AutenticacaoController {
         }
 
         if(!autenticado) {
-            throw new ApiRequestException("Usuário ou senha incorretos", HttpStatus.BAD_REQUEST);
+            throw new ApiRequestException("Usuário e/ou senha incorretos", HttpStatus.BAD_REQUEST);
         }
 
         return usuario.get();

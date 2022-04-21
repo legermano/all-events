@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.legermano.allevents.dto.receiver.UsuarioDTO;
+import com.legermano.allevents.dto.response.UsuarioResponseDTO;
 import com.legermano.allevents.exception.ApiRequestException;
 import com.legermano.allevents.model.Usuario;
 import com.legermano.allevents.repository.UsuarioRepository;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -50,7 +53,8 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public Usuario save(@RequestBody Usuario usuario){
-        return usuarioRepository.save(usuario);
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public UsuarioResponseDTO save(@RequestBody UsuarioDTO usuario) {
+        return  usuarioRepository.save(usuario.paraUsuario()).paraUsuarioResponseDTO();
     }
 }
