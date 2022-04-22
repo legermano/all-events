@@ -13,7 +13,17 @@ class UserService {
   }
 
   createUser(user) {
-    return axios.post(API_URL, JSON.stringify(user));
+    const body = {
+      id: user.id,
+      nome: user.username,
+      endereco: user.address,
+      telefone: user.phone,
+      cpf: user.cpf,
+      email: user.email,
+      senha: user.password
+    };
+
+    return axios.post(API_URL, body);
   }
 }
 

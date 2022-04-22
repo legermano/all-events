@@ -10,6 +10,7 @@ import com.legermano.allevents.exception.ApiRequestException;
 import com.legermano.allevents.model.Usuario;
 import com.legermano.allevents.repository.UsuarioRepository;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/usuario")
 public class UsuarioController {
-    
+
     @Autowired
     UsuarioRepository usuarioRepository;
 
@@ -55,6 +56,14 @@ public class UsuarioController {
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
     public UsuarioResponseDTO save(@RequestBody UsuarioDTO usuario) {
-        return  usuarioRepository.save(usuario.paraUsuario()).paraUsuarioResponseDTO();
+        try {
+            return usuarioRepository.save(
+                usuario.paraUsuario(usuarioRepository)
+            ).paraUsuarioResponseDTO();
+        } catch (ConstraintViolationException e) {
+            throw new ApiRequestException("Não foi possível criar um novo usuário, pois já existe um com esse e-mail", HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            throw new ApiRequestException("Ocorreu um erro ao salvar o usuário", e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 }

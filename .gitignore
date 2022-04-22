@@ -6,7 +6,7 @@ target/
 
 ### DOCKER ###
 .env
-data/
+docker/volumes
 
 ### STS ###
 .apt_generated

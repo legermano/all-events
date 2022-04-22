@@ -6,12 +6,12 @@ CREATE TABLE usuario (
     cpf TEXT,
     email TEXT UNIQUE NOT NULL,
     senha TEXT,
-    fl_admin BOOLEAN
+    fl_admin BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 CREATE TABlE evento (
     id SERIAL PRIMARY KEY,
-    nome TEXT NOT NULL, 
+    nome TEXT NOT NULL,
     descricao TEXT,
     dt_inicio TIMESTAMP NOT NULL,
     dt_fim TIMESTAMP NOT NULL,

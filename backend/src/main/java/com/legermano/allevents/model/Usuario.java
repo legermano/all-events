@@ -41,7 +41,8 @@ public class Usuario {
     //TODO: Criptografar a senha no banco de dados
     private String senha;
 
-    private Boolean fl_admin;
+    @Column(nullable = false)
+    private Boolean fl_admin = false;
 
     @JsonManagedReference(value = "inscricao_ref_usuario")
     @OneToMany(mappedBy = "usuario")

@@ -9,14 +9,29 @@
       <Form @submit="handleRegister" :validation-schema="schema">
         <div v-if="!successful">
           <div class="form-group">
-            <label for="name">Nome</label>
-            <Field name="name" type="text" class="form-control"/>
-            <ErrorMessage name="name" class="error-feedback"/>
+            <label for="username">Nome</label>
+            <Field name="username" type="text" class="form-control"/>
+            <ErrorMessage name="username" class="error-feedback"/>
           </div>
           <div class="form-group">
             <label for="email">Email</label>
             <Field name="email" type="email" class="form-control"/>
             <ErrorMessage name="email" class="error-feedback"/>
+          </div>
+          <div class="form-group">
+            <label for="phone">Telefone</label>
+            <Field name="phone" type="phone" class="form-control"/>
+            <ErrorMessage name="phone" class="error-feedback"/>
+          </div>
+          <div class="form-group">
+            <label for="cpf">CPF</label>
+            <Field name="cpf" type="text" class="form-control"/>
+            <ErrorMessage name="cpf" class="error-feedback"/>
+          </div>
+          <div class="form-group">
+            <label for="address">Endereço</label>
+            <Field name="address" type="text" class="form-control"/>
+            <ErrorMessage name="address" class="error-feedback"/>
           </div>
           <div class="form-group">
             <label for="password">Senha</label>
@@ -60,13 +75,23 @@ export default {
         .min(3, "Deve ter pelo menos 3 caracteres!"),
       email: yup
         .string()
-        .required("Email is obrigatório!")
+        .required("Email é obrigatório!")
         .email("Email inválido!"),
+      phone: yup
+        .string()
+        .required("Telefone é obrigatório!")
+        .matches(/^[(]?(\d{2})[)]?\s?(\d{4,5})\s?-?\s?(\d{4})$/, "Telefone inválido!"),
+      cpf: yup
+        .string()
+        .matches(/^([0-9]{3})\.?([0-9]{3})\.?([0-9]{3})-?([0-9]{2})$/, "CPF inválido!"),
+      address: yup
+        .string()
+        .required("Endereço é obrigatório!"),
       password: yup
         .string()
-        .required("Must be at least 6 characters!")
-        .min(6, "Must be at least 6 characters!")
-        .max(40, "Must be maximum 40 characters!")
+        .required("Senha é obrigatória!")
+        .min(6, "Deve ter pelo menos 6 caracteres!")
+        .max(40, "Deve ter no máximo 40 caracteres!")
     });
     return {
       successful: false,
