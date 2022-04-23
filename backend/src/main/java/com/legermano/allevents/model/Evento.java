@@ -12,6 +12,7 @@ import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.legermano.allevents.dto.response.EventoResponseDTO;
 import com.legermano.allevents.util.DateUtils;
 
 import lombok.AllArgsConstructor;
@@ -31,7 +32,7 @@ public class Evento {
     private String nome;
 
     private String descricao;
-    
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateUtils.DEFAULT_DATE_PATTERN)
     @Column(name = "dt_inicio", nullable = false)
     private LocalDateTime dataInicio;
@@ -46,4 +47,16 @@ public class Evento {
     @JsonManagedReference(value = "inscricao_ref_evento")
     @OneToMany(mappedBy = "evento")
     private List<Inscricao> inscricoes;
+
+    public EventoResponseDTO paraEventoResponseDTO() {
+        EventoResponseDTO dto = new EventoResponseDTO();
+        dto.setId(this.getId());
+        dto.setNome(this.getNome());
+        dto.setDescricao(this.getDescricao());
+        dto.setDataInicio(this.getDataInicio());
+        dto.setDataFim(this.getDataFim());
+        dto.setMaximoVagas(this.getMaximoVagas());
+
+        return dto;
+    }
 }

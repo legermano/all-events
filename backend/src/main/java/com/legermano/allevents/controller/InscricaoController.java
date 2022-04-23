@@ -35,7 +35,7 @@ public class InscricaoController {
 
     @Autowired
     EventoRepository eventoRepository;
-    
+
     @PostMapping(value="/registrar")
     public Inscricao register(@RequestBody Map<String, String> inscricaoMap) {
         if(!inscricaoMap.containsKey("ref_evento") || !inscricaoMap.containsKey("ref_usuario")) {
@@ -62,7 +62,7 @@ public class InscricaoController {
         inscricao.setUsuario(usuario.get());
         inscricao.setEvento(evento.get());
         inscricao.setDataInscricao(DateUtils.getCurrentDateTime());
-        
+
         return inscricaoRepository.save(inscricao);
     }
 
@@ -84,12 +84,11 @@ public class InscricaoController {
             if(dataAtual.isAfter(dataMaximaCancelamento)) {
                 throw new ApiRequestException("Não é possível cancelar a inscrição após 2 dias", HttpStatus.BAD_REQUEST);
             }
-        
+
             inscricao.setDataCancelamento(dataAtual);
             inscricao = inscricaoRepository.save(inscricao);
         }
 
         return inscricao;
     }
-    
 }

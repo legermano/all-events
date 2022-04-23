@@ -3,17 +3,22 @@ package com.legermano.allevents.controller;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.legermano.allevents.dto.receiver.UsuarioDTO;
+import com.legermano.allevents.dto.response.UsuarioInscricaoResponseDTO;
 import com.legermano.allevents.dto.response.UsuarioResponseDTO;
 import com.legermano.allevents.exception.ApiRequestException;
+import com.legermano.allevents.model.Inscricao;
 import com.legermano.allevents.model.Usuario;
+import com.legermano.allevents.repository.InscricaoRepository;
 import com.legermano.allevents.repository.UsuarioRepository;
 
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,8 +32,11 @@ public class UsuarioController {
     @Autowired
     UsuarioRepository usuarioRepository;
 
+    @Autowired
+    InscricaoRepository inscricaoRepository;
+
     @GetMapping()
-    public Usuario getUsuario(@RequestBody Map<String, String> usuarioMap) {
+    public UsuarioResponseDTO getUsuario(@RequestBody Map<String, String> usuarioMap) {
         if(!usuarioMap.containsKey("id") && !usuarioMap.containsKey("email")) {
             throw new ApiRequestException("Necessário especificar o código do usuário e o seu e-mail", HttpStatus.BAD_REQUEST);
         }
@@ -45,12 +53,15 @@ public class UsuarioController {
             throw new ApiRequestException("Usuário não encontrado", HttpStatus.NOT_FOUND);
         }
 
-        return usuario.get();
+        return usuario.get().paraUsuarioResponseDTO();
     }
 
     @GetMapping(value = "/todos")
-    public List<Usuario> getAll(){
-        return usuarioRepository.findAll();
+    public List<UsuarioResponseDTO> getAll(){
+        return usuarioRepository.findAll()
+                                .stream()
+                                .map(Usuario::paraUsuarioResponseDTO)
+                                .collect(Collectors.toList());
     }
 
     @PostMapping
@@ -65,5 +76,14 @@ public class UsuarioController {
         } catch (Exception e) {
             throw new ApiRequestException("Ocorreu um erro ao salvar o usuário", e.getMessage(), HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping(value = "/{codigoUsuario}/inscricoes")
+    public List<UsuarioInscricaoResponseDTO> getInscricoes(@PathVariable Integer codigoUsuario) {
+        return inscricaoRepository
+               .findByCodigoUsuarioAndDataCancelamentoNull(codigoUsuario)
+               .stream()
+               .map(Inscricao::paraUsuarioInscricaoResponseDTO)
+               .collect(Collectors.toList());
     }
 }

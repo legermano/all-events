@@ -4,10 +4,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import com.legermano.allevents.dto.response.EventoInscricaoResponseDTO;
 import com.legermano.allevents.exception.ApiRequestException;
 import com.legermano.allevents.model.Evento;
+import com.legermano.allevents.model.Inscricao;
 import com.legermano.allevents.repository.EventoRepository;
+import com.legermano.allevents.repository.InscricaoRepository;
 import com.legermano.allevents.util.DateUtils;
 import com.legermano.allevents.util.genericSearch.GenericSpecification;
 import com.legermano.allevents.util.genericSearch.GenericSpecificationsBuilder;
@@ -29,6 +33,9 @@ public class EventoController {
     @Autowired
     EventoRepository eventoRepository;
 
+    @Autowired
+    InscricaoRepository inscricaoRepository;
+
     @GetMapping("/{id}")
     public Evento getEvento(@PathVariable Integer id) {
         Optional<Evento> evento = eventoRepository.findById(id);
@@ -38,13 +45,13 @@ public class EventoController {
         }
 
         return evento.get();
-    }    
+    }
 
     @GetMapping(value = "/todos")
     public List<Evento> getAll() {
         return eventoRepository.findAll();
     }
-    
+
     @GetMapping(value = "/filtro")
     public List<Evento> search(@RequestBody SearchCriteriaList search) {
         GenericSpecificationsBuilder<Evento> specBuilder = new GenericSpecificationsBuilder<>();
@@ -53,15 +60,39 @@ public class EventoController {
     }
 
     @GetMapping(value = "/futuro")
-    public List<Evento> getFuture(@RequestBody Map<String, String> eventoMap) {
-        LocalDateTime dateTime = DateUtils.convertStrinToLocalDateTime(eventoMap.get("date"));
-        return eventoRepository.findByDataFimGreaterThan(dateTime);
+    public List<Evento> getFuture(@RequestBody(required = false) Map<String, String> eventoMap) {
+        // Inicia com a data e hora atual para filtrar os eventos
+        LocalDateTime dateTime = DateUtils.getCurrentDateTime();
 
+        // Se for passado uma data no body da requisição, filtra por ela
+        if(eventoMap != null && eventoMap.containsKey("date"))
+        {
+            dateTime = DateUtils.convertStrinToLocalDateTime(eventoMap.get("date"));
+        }
+
+        return eventoRepository.findByDataFimGreaterThan(dateTime);
     }
 
     @GetMapping(value = "/ativos")
-    public List<Evento> getActive(@RequestBody Map<String, String> eventoMap) {
-        LocalDateTime dateTime = DateUtils.convertStrinToLocalDateTime(eventoMap.get("date"));
+    public List<Evento> getActive(@RequestBody(required = false) Map<String, String> eventoMap) {
+        // Inicia com a data e hora atual para filtrar os eventos
+        LocalDateTime dateTime = DateUtils.getCurrentDateTime();
+
+        // Se for passado uma data no body da requisição, filtra por ela
+        if(eventoMap != null && eventoMap.containsKey("date"))
+        {
+            dateTime = DateUtils.convertStrinToLocalDateTime(eventoMap.get("date"));
+        }
+
         return eventoRepository.findByDataInicioLessThanEqualAndDataFimGreaterThan(dateTime, dateTime);
+    }
+
+    @GetMapping(value = "{codigoEvento}/inscricoes")
+    public List<EventoInscricaoResponseDTO> getInscricoes(@PathVariable Integer codigoEvento) {
+        return inscricaoRepository
+               .findByCodigoEventoAndDataCancelamentoNull(codigoEvento)
+               .stream()
+               .map(Inscricao::paraEventoInscricaoResponseDTO)
+               .collect(Collectors.toList());
     }
 }

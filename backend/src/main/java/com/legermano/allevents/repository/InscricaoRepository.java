@@ -13,4 +13,6 @@ import org.springframework.stereotype.Repository;
 public interface InscricaoRepository extends JpaRepository<Inscricao, Integer>{
     List<Inscricao> findByUsuarioAndEvento(Usuario usuario, Evento evento);
     List<Inscricao> findByUsuarioAndEventoAndDataCancelamentoNull(Usuario usuario, Evento evento);
+    List<Inscricao> findByCodigoEventoAndDataCancelamentoNull(Integer evento);
+    List<Inscricao> findByCodigoUsuarioAndDataCancelamentoNull(Integer usuario);
 }

@@ -1,11 +1,11 @@
 INSERT INTO usuario (id, nome, endereco, telefone, cpf, email, senha, fl_admin) VALUES (
     1,
-    'Lucas Emanuel Germano', 
-    'Rua José Linhares', 
-    '(51)98256-2799', 
-    '034.935.970-96', 
-    'lucas.germano@universo.univates.br', 
-    'teste123', 
+    'Lucas Emanuel Germano',
+    'Rua José Linhares',
+    '(51)98256-2799',
+    '034.935.970-96',
+    'lucas.germano@universo.univates.br',
+    'teste123',
     'f'
 );
 
