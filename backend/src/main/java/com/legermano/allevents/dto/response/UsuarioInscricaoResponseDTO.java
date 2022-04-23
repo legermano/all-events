@@ -10,4 +10,5 @@ public class UsuarioInscricaoResponseDTO {
     private EventoResponseDTO evento;
     private LocalDateTime dataInscricao;
     private LocalDateTime dataCancelamento;
+    private LocalDateTime dataPresenca;
 }

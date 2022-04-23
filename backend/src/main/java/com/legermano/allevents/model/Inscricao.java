@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.legermano.allevents.dto.response.EventoInscricaoResponseDTO;
+import com.legermano.allevents.dto.response.InscricaoResponseDTO;
 import com.legermano.allevents.dto.response.UsuarioInscricaoResponseDTO;
 import com.legermano.allevents.util.DateUtils;
 
@@ -58,13 +59,25 @@ public class Inscricao {
     @Column(name = "dt_cancelamento")
     private LocalDateTime dataCancelamento;
 
-    @JsonManagedReference(value = "inscricao_presenca_ref_inscricao")
-    @OneToMany(mappedBy = "inscricao")
-    private List<InscricaoPresenca> inscricoesPresencas;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateUtils.DEFAULT_DATE_PATTERN)
+    @Column(name = "dt_presenca")
+    private LocalDateTime dataPresenca;
 
     @JsonManagedReference(value = "inscricao_certificado_ref_inscricao")
     @OneToMany(mappedBy = "inscricao")
     private List<InscricaoCertificado> inscricoesCertificados;
+
+    public InscricaoResponseDTO paraInscricaoResponseDTO() {
+        InscricaoResponseDTO dto = new InscricaoResponseDTO();
+        dto.setId(this.getId());
+        dto.setUsuario(this.getUsuario().paraUsuarioResponseDTO());
+        dto.setEvento(this.getEvento().paraEventoResponseDTO());
+        dto.setDataInscricao(this.getDataInscricao());
+        dto.setDataCancelamento(this.getDataCancelamento());
+        dto.setDataPresenca(this.getDataPresenca());
+
+        return dto;
+    }
 
     public EventoInscricaoResponseDTO paraEventoInscricaoResponseDTO() {
         EventoInscricaoResponseDTO dto = new EventoInscricaoResponseDTO();
@@ -72,6 +85,7 @@ public class Inscricao {
         dto.setUsuario(this.getUsuario().paraUsuarioResponseDTO());
         dto.setDataInscricao(this.getDataInscricao());
         dto.setDataCancelamento(this.getDataCancelamento());
+        dto.setDataPresenca(this.getDataPresenca());
 
         return dto;
     }
@@ -82,6 +96,7 @@ public class Inscricao {
         dto.setEvento(this.getEvento().paraEventoResponseDTO());
         dto.setDataInscricao(this.getDataInscricao());
         dto.setDataCancelamento(this.getDataCancelamento());
+        dto.setDataPresenca(this.getDataPresenca());
 
         return dto;
     }

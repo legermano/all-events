@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.legermano.allevents.dto.response.InscricaoResponseDTO;
 import com.legermano.allevents.exception.ApiRequestException;
 import com.legermano.allevents.model.Evento;
 import com.legermano.allevents.model.Inscricao;
@@ -37,7 +38,7 @@ public class InscricaoController {
     EventoRepository eventoRepository;
 
     @PostMapping(value="/registrar")
-    public Inscricao register(@RequestBody Map<String, String> inscricaoMap) {
+    public InscricaoResponseDTO register(@RequestBody Map<String, String> inscricaoMap) {
         if(!inscricaoMap.containsKey("ref_evento") || !inscricaoMap.containsKey("ref_usuario")) {
             throw new ApiRequestException("Necessário especificar todos os campos", HttpStatus.BAD_REQUEST);
         }
@@ -63,11 +64,11 @@ public class InscricaoController {
         inscricao.setEvento(evento.get());
         inscricao.setDataInscricao(DateUtils.getCurrentDateTime());
 
-        return inscricaoRepository.save(inscricao);
+        return inscricaoRepository.save(inscricao).paraInscricaoResponseDTO();
     }
 
     @PostMapping(value = "/cancelar/{id}")
-    public Inscricao cancel(@PathVariable Integer id) {
+    public InscricaoResponseDTO cancel(@PathVariable Integer id) {
         Optional<Inscricao> inscricaoOptional = inscricaoRepository.findById(id);
 
         if(inscricaoOptional.isEmpty()) {
@@ -89,6 +90,31 @@ public class InscricaoController {
             inscricao = inscricaoRepository.save(inscricao);
         }
 
-        return inscricao;
+        return inscricao.paraInscricaoResponseDTO();
+    }
+
+    @PostMapping(value = "/presenca/{codigoInscricao}")
+    public InscricaoResponseDTO registerAttendance(@PathVariable Integer codigoInscricao) {
+        Optional<Inscricao> inscricaoOptional = inscricaoRepository.findById(codigoInscricao);
+        Inscricao inscricao;
+
+        if(inscricaoOptional.isEmpty()) {
+            throw new ApiRequestException("Inscrição não encontrada", HttpStatus.NOT_FOUND);
+        }
+
+        inscricao = inscricaoOptional.get();
+
+        if(inscricao.getDataCancelamento() != null) {
+            throw new ApiRequestException("Não é possível registrar presença em uma inscrição cancelada", HttpStatus.BAD_REQUEST);
+        }
+
+        if(inscricao.getDataPresenca() != null) {
+            throw new ApiRequestException("Presença já registrada para essa inscrição", HttpStatus.BAD_REQUEST);
+        }
+
+        inscricao.setDataPresenca(DateUtils.getCurrentDateTime());
+        inscricao = inscricaoRepository.save(inscricao);
+
+        return inscricao.paraInscricaoResponseDTO();
     }
 }

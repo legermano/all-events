@@ -24,16 +24,9 @@ CREATE TABLE inscricao (
     ref_evento INTEGER NOT NULL,
     dt_inscricao TIMESTAMP NOT NULL,
     dt_cancelamento TIMESTAMP,
+    dt_presenca TIMESTAMP,
     FOREIGN KEY(ref_usuario) REFERENCES usuario(id),
     FOREIGN KEY(ref_evento)  REFERENCES evento(id)
-);
-
-CREATE TABLE inscricao_presenca (
-    id SERIAL PRIMARY KEY,
-    ref_inscricao INTEGER NOT NULL,
-    dt_presenca TIMESTAMP,
-    observacao TEXT,
-    FOREIGN KEY(ref_inscricao) REFERENCES inscricao(id)
 );
 
 CREATE TABLE inscricao_certificado (
