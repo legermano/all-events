@@ -1,5 +1,4 @@
-INSERT INTO usuario (id, nome, endereco, telefone, cpf, email, senha, fl_admin) VALUES (
-    1,
+INSERT INTO usuario (nome, endereco, telefone, cpf, email, senha, fl_admin) VALUES (
     'Lucas Emanuel Germano',
     'Rua José Linhares',
     '(51)98256-2799',
@@ -9,8 +8,7 @@ INSERT INTO usuario (id, nome, endereco, telefone, cpf, email, senha, fl_admin) 
     'f'
 );
 
-INSERT INTO evento (id, nome, descricao, dt_inicio, dt_fim, maximo_vagas) VALUES (
-    1,
+INSERT INTO evento (nome, descricao, dt_inicio, dt_fim, maximo_vagas) VALUES (
     'Evento da Sexta-Feira Santa',
     'Evento que irá acontecer na sexta-feira Santa',
     '2022-04-15 09:00:00',
@@ -18,8 +16,7 @@ INSERT INTO evento (id, nome, descricao, dt_inicio, dt_fim, maximo_vagas) VALUES
     100
 );
 
-INSERT INTO evento (id, nome, descricao, dt_inicio, dt_fim, maximo_vagas) VALUES (
-    2,
+INSERT INTO evento (nome, descricao, dt_inicio, dt_fim, maximo_vagas) VALUES (
     'Evento Arquitetura de Software',
     'Evento que irá acontecer na última aula de Arquitetura de Software',
     '2022-04-20 19:10:00',
@@ -27,9 +24,8 @@ INSERT INTO evento (id, nome, descricao, dt_inicio, dt_fim, maximo_vagas) VALUES
     100
 );
 
-INSERT INTO inscricao (id, ref_usuario, ref_evento, dt_inscricao) VALUES (
-    1,
-    1,
-    1,
+INSERT INTO inscricao (ref_usuario, ref_evento, dt_inscricao) VALUES (
+    (SELECT id FROM usuario WHERE email = "lucas.germano@universo.univates.br"),
+    (SELECT id FROM evento WHERE nome = "Evento da Sexta-Feira Santa"),
     '2022-04-13 11:00:00'
 );

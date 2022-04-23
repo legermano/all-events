@@ -1,9 +1,9 @@
 CREATE TABLE usuario (
     id SERIAL PRIMARY KEY,
     nome TEXT NOT NULL,
-    endereco TEXT NOT NULL,
+    cpf TEXT NOT NULL,
+    endereco TEXT,
     telefone TEXT,
-    cpf TEXT,
     email TEXT UNIQUE NOT NULL,
     senha TEXT,
     fl_admin BOOLEAN NOT NULL DEFAULT FALSE

@@ -29,11 +29,11 @@ public class Usuario {
     private String nome;
 
     @Column(nullable = false)
+    private String cpf;
+
     private String endereco;
 
     private String telefone;
-
-    private String cpf;
 
     @Column(unique = true, nullable = false)
     private String email;

@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -65,6 +66,31 @@ public class InscricaoController {
         inscricao.setDataInscricao(DateUtils.getCurrentDateTime());
 
         return inscricaoRepository.save(inscricao).paraInscricaoResponseDTO();
+    }
+
+    @PostMapping(value = "/registrar/simplificado")
+    public InscricaoResponseDTO simplifiedRegister(@RequestBody Map<String, String> inscricaoMap) {
+        List<String> keys = Arrays.asList("ref_evento", "email", "nome", "cpf");
+        if(!inscricaoMap.keySet().containsAll(keys)) {
+            throw new ApiRequestException("Necessário especificar todos os campos", HttpStatus.BAD_REQUEST);
+        }
+
+        Optional<Usuario> usuarioOptional = usuarioRepository.findByEmail(inscricaoMap.get("email"));
+        Usuario usuario;
+
+        //TODO: Registro simplificado gerar um senha aleatória para a pessoa e avisar por e-mail
+        if(usuarioOptional.isEmpty()) {
+            usuario = new Usuario();
+            usuario.setNome(inscricaoMap.get("nome"));
+            usuario.setEmail(inscricaoMap.get("email"));
+            usuario.setCpf(inscricaoMap.get("cpf"));
+            usuario = usuarioRepository.save(usuario);
+        } else {
+            usuario = usuarioOptional.get();
+        }
+
+        inscricaoMap.put("ref_usuario", usuario.getId().toString());
+        return this.register(inscricaoMap);
     }
 
     @PostMapping(value = "/cancelar/{id}")
