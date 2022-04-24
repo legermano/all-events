@@ -3,6 +3,7 @@ package com.legermano.allevents.controller;
 import java.util.Map;
 import java.util.Optional;
 
+import com.legermano.allevents.dto.response.UsuarioResponseDTO;
 import com.legermano.allevents.exception.ApiRequestException;
 import com.legermano.allevents.model.Usuario;
 import com.legermano.allevents.repository.UsuarioRepository;
@@ -21,7 +22,7 @@ public class AutenticacaoController {
     UsuarioRepository usuarioController;
 
     @PostMapping(value = "/usuario")
-    public Usuario autenticaUsuario(@RequestBody Map<String, String> usuarioMap) {
+    public UsuarioResponseDTO autenticaUsuario(@RequestBody Map<String, String> usuarioMap) {
         if(!usuarioMap.containsKey("email") || !usuarioMap.containsKey("senha")) {
             throw new ApiRequestException("Necessário especificar todos os campos", HttpStatus.BAD_REQUEST);
         }
@@ -38,6 +39,6 @@ public class AutenticacaoController {
             throw new ApiRequestException("Usuário e/ou senha incorretos", HttpStatus.BAD_REQUEST);
         }
 
-        return usuario.get();
+        return usuario.get().paraUsuarioResponseDTO();
     }
 }
