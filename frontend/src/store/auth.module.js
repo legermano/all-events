@@ -12,8 +12,8 @@ export const auth = {
     login({ commit }, user) {
       return AuthService.login(user).then(
         user => {
-          commit('loginSuccess', user);
-          return Promise.resolve(user);
+          commit('loginSuccess', user.data);
+          return Promise.resolve(user.data);
         },
         error => {
           commit('loginFailure');
@@ -27,9 +27,9 @@ export const auth = {
     },
     register({ commit }, user) {
       return UserService.createUser(user).then(
-        response => {
-          commit('registerSuccess');
-          return Promise.resolve(response.data);
+        user => {
+          commit('registerSuccess', user.data);
+          return Promise.resolve(user);
         },
         error => {
           commit('registerFailure');
@@ -52,7 +52,8 @@ export const auth = {
       state.user = null;
     },
     registerSuccess(state) {
-      state.status.loggedIn = false;
+      state.status.loggedIn = true;
+      state.user = user;
     },
     registerFailure(state) {
       state.status.loggedIn = false;

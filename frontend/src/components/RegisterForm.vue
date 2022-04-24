@@ -83,6 +83,7 @@ export default {
         .matches(/^[(]?(\d{2})[)]?\s?(\d{4,5})\s?-?\s?(\d{4})$/, "Telefone inválido!"),
       cpf: yup
         .string()
+        .required()
         .matches(/^([0-9]{3})\.?([0-9]{3})\.?([0-9]{3})-?([0-9]{2})$/, "CPF inválido!"),
       address: yup
         .string()
@@ -107,7 +108,7 @@ export default {
   },
   mounted() {
     if(this.loggedIn) {
-      this.$router.push("/about");
+      this.$router.push("/");
     }
   },
   methods: {
@@ -116,10 +117,8 @@ export default {
       this.successful = false;
       this.loading = true;
       this.$store.dispatch("auth/register", user).then(
-        (data) => {
-          this.message = data.message;
-          this.successful = true;
-          this.loading = false;
+        () => {
+          this.$router.push("/");
         },
         (error) => {
           this.message =
@@ -138,6 +137,4 @@ export default {
 }
 </script>
 
-<style scoped>
-@import '@/assets/css/login.css';
-</style>
+<style scoped src="@/assets/css/login.css"></style>

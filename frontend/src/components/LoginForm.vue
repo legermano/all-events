@@ -61,7 +61,7 @@ export default {
   },
   created() {
     if(this.loggedIn) {
-      this.$router.push("/about");
+      this.$router.push("/");
     }
   },
   methods: {
@@ -69,7 +69,7 @@ export default {
       this.loading = true;
       this.$store.dispatch("auth/login", user).then(
         () => {
-          this.$router.push("/about");
+          this.$router.push("/");
         },
         (error) => {
           this.loading = false;
@@ -87,6 +87,4 @@ export default {
 }
 </script>
 
-<style scoped>
-@import '@/assets/css/login.css';
-</style>
+<style scoped src="@/assets/css/login.css"></style>

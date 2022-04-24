@@ -3,7 +3,7 @@ const API_URL = process.env.VUE_APP_API_URL+'usuario';
 
 class UserService {
   getAllUsers() {
-    return axios.get(API_URL + '/todos');
+    return axios.get(`${API_URL}/todos`);
   }
 
   getSingleUser(userSearch) {
@@ -23,7 +23,14 @@ class UserService {
       senha: user.password
     };
 
-    return axios.post(API_URL, body);
+    return axios.post(API_URL, body).then(user => {
+      localStorage.setItem('user', JSON.stringify(user.data));
+      return user;
+    });
+  }
+
+  getAllUserSubscription(userId) {
+    return axios.get(`${API_URL}/${userId}/inscricoes`);
   }
 }
 
