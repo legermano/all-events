@@ -1,5 +1,5 @@
 <template>
-  <div class="container pt-4">
+  <div class="container">
     <div class="row">
         <div class="col-lg-4 col-sm-6 mb-4" v-for="event in events" :key="event.id">
           <EventCard :event=event />

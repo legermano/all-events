@@ -29,7 +29,7 @@ export const auth = {
       return UserService.createUser(user).then(
         user => {
           commit('registerSuccess', user.data);
-          return Promise.resolve(user);
+          return Promise.resolve(user.data);
         },
         error => {
           commit('registerFailure');

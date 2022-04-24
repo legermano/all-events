@@ -15,7 +15,7 @@ app.component("font-awesome-icon", FontAwesomeIcon)
 app.mount('#app');
 
 app.config.globalProperties.$filters = {
-  formatDate(value, format = 'DD/MM/YYYY hh:mm') {
+  formatDate(value, format = 'DD/MM/YYYY HH:mm') {
     if(value && format) {
       return moment(String(value)).format(format);
     }

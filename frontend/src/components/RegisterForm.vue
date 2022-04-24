@@ -41,7 +41,7 @@
           <div class="form-group">
             <button class="btn btn-primary btn-block" :disabled="loading">
               <span v-show="loading" class="spinner-border spinner-border-sm" />
-                Sign Up
+                Criar conta
             </button>
           </div>
         </div>
@@ -79,15 +79,13 @@ export default {
         .email("Email inválido!"),
       phone: yup
         .string()
-        .required("Telefone é obrigatório!")
         .matches(/^[(]?(\d{2})[)]?\s?(\d{4,5})\s?-?\s?(\d{4})$/, "Telefone inválido!"),
       cpf: yup
         .string()
-        .required()
+        .required("CPF é obrigatório")
         .matches(/^([0-9]{3})\.?([0-9]{3})\.?([0-9]{3})-?([0-9]{2})$/, "CPF inválido!"),
       address: yup
-        .string()
-        .required("Endereço é obrigatório!"),
+        .string(),
       password: yup
         .string()
         .required("Senha é obrigatória!")

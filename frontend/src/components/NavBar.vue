@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
     <router-link to="/" class="nav-link">
       <a class="navbar-brand">All Events</a>
     </router-link>
