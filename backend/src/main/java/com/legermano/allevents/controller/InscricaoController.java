@@ -84,6 +84,7 @@ public class InscricaoController {
             usuario.setNome(inscricaoMap.get("nome"));
             usuario.setEmail(inscricaoMap.get("email"));
             usuario.setCpf(inscricaoMap.get("cpf"));
+            usuario.setSenha("teste"); //FIX-ME
             usuario = usuarioRepository.save(usuario);
         } else {
             usuario = usuarioOptional.get();

@@ -1,6 +1,7 @@
 package com.legermano.allevents.dto.response;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import lombok.Data;
 
@@ -12,4 +13,5 @@ public class EventoResponseDTO {
     private LocalDateTime dataInicio;
     private LocalDateTime dataFim;
     private Integer maximoVagas;
+    private List<EventoInscricaoResponseDTO> inscricoes;
 }
