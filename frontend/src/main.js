@@ -6,6 +6,7 @@ import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FontAwesomeIcon } from './plugins/font-awesome';
 import moment from 'moment';
+import axios from 'axios';
 
 const app = createApp(App)
 
@@ -21,3 +22,6 @@ app.config.globalProperties.$filters = {
     }
   }
 }
+
+// Default header to call the API
+axios.defaults.headers.common['Authorization'] = 'frontend';

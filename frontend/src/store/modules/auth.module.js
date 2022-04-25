@@ -9,10 +9,11 @@ export const auth = {
   namespaced: true,
   state: initialState,
   actions: {
-    login({ commit }, user) {
+    login({ commit,dispatch }, user) {
       return AuthService.login(user).then(
         user => {
           commit('loginSuccess', user.data);
+          dispatch('user/getUserSubscritions', { user: user.data }, {root : true});
           return Promise.resolve(user.data);
         },
         error => {
@@ -25,10 +26,11 @@ export const auth = {
       AuthService.logout();
       commit('logout');
     },
-    register({ commit }, user) {
+    register({ commit, dispatch }, user) {
       return UserService.createUser(user).then(
         user => {
           commit('registerSuccess', user.data);
+          dispatch('user/getUserSubscritions', { user: user.data }, {root : true});
           return Promise.resolve(user.data);
         },
         error => {
