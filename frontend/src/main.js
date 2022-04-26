@@ -4,9 +4,15 @@ import router from './router'
 import store from './store'
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faCalendarCheck, faCalendarXmark, faCalendarDay } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from './plugins/font-awesome';
 import moment from 'moment';
 import axios from 'axios';
+
+library.add(faCalendarCheck);
+library.add(faCalendarXmark);
+library.add(faCalendarDay);
 
 const app = createApp(App)
 

@@ -29,8 +29,12 @@ class UserService {
     });
   }
 
-  getAllUserSubscription(userId) {
+  getUserSubscriptions(userId) {
     return axios.get(`${API_URL}/${userId}/inscricoes`);
+  }
+
+  getUserSubscriptionsAll(userId) {
+    return axios.get(`${API_URL}/${userId}/inscricoes/todas`);
   }
 }
 

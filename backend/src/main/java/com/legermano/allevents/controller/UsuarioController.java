@@ -86,4 +86,13 @@ public class UsuarioController {
                .map(Inscricao::paraUsuarioInscricaoResponseDTO)
                .collect(Collectors.toList());
     }
+
+    @GetMapping(value = "/{codigoUsuario}/inscricoes/todas")
+    public List<UsuarioInscricaoResponseDTO> getTodasInscricoes(@PathVariable Integer codigoUsuario) {
+        return inscricaoRepository
+               .findByCodigoUsuario(codigoUsuario)
+               .stream()
+               .map(Inscricao::paraUsuarioInscricaoResponseDTO)
+               .collect(Collectors.toList());
+    }
 }

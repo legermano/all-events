@@ -15,4 +15,5 @@ public interface InscricaoRepository extends JpaRepository<Inscricao, Integer>{
     List<Inscricao> findByUsuarioAndEventoAndDataCancelamentoNull(Usuario usuario, Evento evento);
     List<Inscricao> findByCodigoEventoAndDataCancelamentoNull(Integer evento);
     List<Inscricao> findByCodigoUsuarioAndDataCancelamentoNull(Integer usuario);
+    List<Inscricao> findByCodigoUsuario(Integer usuario);
 }

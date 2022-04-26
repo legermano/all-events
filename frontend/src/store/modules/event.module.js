@@ -11,7 +11,7 @@ export const event = {
       const events = (await EventService.getAllEvents()).data;
       if(rootState.auth.status.loggedIn) {
         const user = JSON.parse(JSON.stringify(rootState.auth.user));
-        const userSubs = (await UserService.getAllUserSubscription(user.id)).data;
+        const userSubs = (await UserService.getUserSubscriptions(user.id)).data;
 
         userSubs.forEach(sub => {
             var index = events.findIndex(event => event.id == sub.evento.id);

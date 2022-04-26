@@ -9,7 +9,11 @@ export const user = {
   },
   actions: {
     async getUserSubscritions({ commit }, { user }) {
-      const subscritions = await UserService.getAllUserSubscription(user.id);
+      const subscritions = await UserService.getUserSubscriptions(user.id);
+      commit('refreshUserSubscriptions', subscritions.data);
+    },
+    async getUserSubscritionsAll({ commit }, { user }) {
+      const subscritions = await UserService.getUserSubscriptionsAll(user.id);
       commit('refreshUserSubscriptions', subscritions.data);
     },
     async registerSubscription({ dispatch }, { event, user }) {
@@ -17,10 +21,14 @@ export const user = {
       await dispatch('getUserSubscritions', { user: user });
       return sub;
     },
-    async cancelSubscription({ dispatch }, { subscription, user = null }) {
+    async cancelSubscription({ dispatch }, { subscription, user = null, allSubscriptions = false }) {
       const sub = await SubscriptionService.cancel(subscription);
       if(user) {
-        await dispatch('getUserSubscritions', { user: user });
+        if(allSubscriptions) {
+          await dispatch('getUserSubscritionsAll', { user: user });
+        } else {
+          await dispatch('getUserSubscritions', { user: user });
+        }
       }
       return sub;
     }

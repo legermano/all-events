@@ -99,6 +99,8 @@
 </template>
 
 <script>
+import { createToast } from 'mosha-vue-toastify';
+import 'mosha-vue-toastify/dist/style.css';
 export default {
   name: "EventCard",
   props: ['event'],
@@ -147,7 +149,17 @@ export default {
       this.$store.dispatch('user/cancelSubscription', {
         subscription: JSON.parse(JSON.stringify(this.mEvent.usuarioInscricao)),
         user: JSON.parse(JSON.stringify(this.currentUser))
-      }).then(() => { this.mEvent.usuarioInscricao = null });
+      }).then(
+        () => { this.mEvent.usuarioInscricao = null },
+        (error) => {
+          createToast(error.response.data.message, {
+            type: 'danger',
+            transition: 'slide',
+            position: 'top-right',
+            showIcon: true,
+          });
+        }
+      );
     }
   }
 }

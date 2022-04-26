@@ -18,8 +18,8 @@
     <div class="collapse navbar-collapse pl-3" id="navBarToggler">
       <div class="navbar-nav mr-auto">
         <li class="nav-item">
-          <router-link v-if="currentUser" to="/" class="nav-link">
-            Usuário
+          <router-link v-if="currentUser" to="/subscriptions" class="nav-link">
+            Inscrições
           </router-link>
         </li>
       </div>
@@ -41,10 +41,10 @@
 
       <div v-if="currentUser" class="navbar-nav ml-auto">
         <li class="nav-item">
-          <router-link to="/profile" class="nav-link">
+          <div class="nav-link">
             <font-awesome-icon icon="user" />
             {{ currentUser.nome }}
-          </router-link>
+          </div>
         </li>
         <li class="nav-item">
           <a class="nav-link" style="cursor:pointer" @click.prevent="logOut">
